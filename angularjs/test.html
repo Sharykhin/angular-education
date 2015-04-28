@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <title>Directives</title>
+    <script src="vendor/angular/angular.js"></script>
+    <link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+   <script>
+        angular.module('exampleApp',[])
+            .controller('defaultCtrl',['$scope',function($scope){
+                $scope.name = "DA DA";
+                console.log(this.myname);
+            }])
+            .controller('ChildCtrl',function($scope){
+                $scope.myname="Abba";                
+            });
+            
+    </script>
+</head>
+<body>
+   <div id="todoPanel" class="panel" ng-controller="defaultCtrl">
+        <div>{{myname}}</div>
+        <div ng-include="'inc.html'"></div>
+       
+    </div>
+</body>
+</html>
