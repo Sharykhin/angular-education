@@ -1,7 +1,7 @@
-var connect = require('connect'),
-    serveStatic = require('serve-static');
+var express = require('express');
+var app = express();
 
-var app = connect();
-
-app.use(serveStatic("angularjs"));
-app.listen(5000);
+app.use(express.static('angularjs'));
+app.listen(5000, function() {
+	console.log("Server started on http://localhost:5000")
+})
