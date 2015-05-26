@@ -11,7 +11,7 @@
 		<script>
 			$(document).ready(function(){
 				$('#jqui button').button().click(function (e) {
-					angular.element(angularRegion).scope().$apply('clickCounter=clickCounter + 1');
+					angular.element(angularRegion).scope().$evalAsync('clickCounter=clickCounter + 1');
 				});
 			});
 			var app = angular.module("exampleApp", []);
