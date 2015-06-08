@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="Firebase">
+<head>
+	<title>Firebase</title>
+	<script src="vendor/angular/angular.js"></script>
+	<script src="https://cdn.firebase.com/js/client/2.2.6/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js" type="text/javascript"></script>
+	<link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+	<link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+	<script type="text/javascript">
+		var app = angular.module('Firebase',["firebase"]);
+		app.controller('Firebase',["$scope","$firebase", function($scope,$firebase) {
+
+				var ref = new Firebase("https://crackling-heat-4916.firebaseio.com/");
+				$scope.comments = $firebase(ref);
+
+				$scope.username = 'Guest' + Math.floor(Math.random() * 101);
+				$scope.addComment = function(event) {
+					if (event.keyCode != 13) {return};
+
+					$scope.comments.$add({
+						from: $scope.username,
+						body: $scope.commentModel
+					});
+
+					$scope.commentModel="";
+				}
+		}]);
+	</script>
+</head>
+<body ng-controller="Firebase">
+<div class="container">
+	<div class="row">
+		<h1>Video here</h1>
+	</div>
+	<div class="comments">
+		<div class="row" ng-repeat="comment in comments">
+			<span><b>{{comment.from}}</b> {{comment.body}}</span>
+		</div>
+	</div>
+	<div>
+		<textarea ng-keydown="addComment($event)" ng-model="commentModel"></textarea>
+	</div>
+
+</div>
+</body>
+</html>
