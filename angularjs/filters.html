@@ -14,7 +14,7 @@
 				{ name: "Bananas", category: "Fruit", price: 2.42, expiry: 7 },
 				{ name: "Pears", category: "Fruit", price: 2.02, expiry: 6 },
 				 
-				{ name: "Tuna", category: "Fish", price: 20.45, expiry: 3 },
+				{ name: "tuna", category: "Fish", price: 20.45, expiry: 3 },
 				{ name: "Salmon", category: "Fish", price: 17.93, expiry: 2 },
 				{ name: "Trout", category: "Fish", price: 12.93, expiry: 4 },
 				 
@@ -30,12 +30,17 @@
 				return item.category == "Fish" || item.name == "Beer";
 			};
 
+			$scope.myCustomSorter = function (item) {
+				return item.expiry < 5 ? 0 : item.price;
+			}
+
 			for (var i = (0 - $scope.products.length); 
 					i <= $scope.products.length; i++) {
 						$scope.limitRange.push(i.toString());
 					}			
 		});
 	</script>
+	<script src="customerFilters.js"></script>
 </head>
 <body ng-controller="defaultCtrl">
 	<div class="panel panel-default">
@@ -59,9 +64,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="p in products | orderBy:'-price'">
-						<td>{{p.name}}</td>
-						<td>{{p.category}}</td>
+					<tr ng-repeat="p in products | take:3:5">
+						<td>{{p.name | labelCase}}</td>
+						<td>{{p.category | labelCase:true }}</td>
 						<td>{{p.expiry}}</td>
 						<td class="text-right">{{p.price | currency }}</td>
 					</tr>
