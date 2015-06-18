@@ -12,10 +12,36 @@
 			{ name: "Bananas", category: "Fruit", price: 2.42, expiry: 7 },
 			{ name: "Pears", category: "Fruit", price: 2.02, expiry: 6 }
 			];
+
+			$scope.incrementPrices = function () {
+				console.log($scope.products[0].price);
+				for (var i = 0; i < $scope.products.length; i++) {					
+					$scope.products[i].price++;
+				}
+			}
+
+			
 		})
 		.directive('unorderedList', function(){
 			return function(scope,elemnt, attrs) {
-
+				console.log(attrs);
+				var data = scope[attrs['unorderedList']];
+				var propertyExpression = attrs['listProperty'];
+				if (angular.isArray(data)) {
+					var listElem = angular.element('<ul>');
+					elemnt.append(listElem);					
+					for (var i = 0, len = data.length; i < len; i++) {
+						var itemElement = angular.element('<li>');
+						listElem.append(itemElement);
+						var watcherFn = function (watchScope) {
+							return watchScope.$eval(propertyExpression, data[i]);
+						}
+						scope.$watch(watcherFn, function (newValue, oldValue) {
+							console.log('yes');
+							itemElement.text(newValue);
+						});
+					}
+				}
 			}
 		});
 	</script>
@@ -26,7 +52,12 @@
 			<h3>Products</h3>
 		</div>
 		<div class="panel-body">
-			<div unordered-list="products"></div>
+			<button class="btn btn-primary" ng-click="incrementPrices()">
+				Change Prices
+			</button>
+		</div>
+		<div class="panel-body">
+			<div unordered-list="products" list-property="price | currency"></div>
 		</div>
 	</div>
 </body>
