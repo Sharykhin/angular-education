@@ -1,7 +1,7 @@
 <html ng-app="exampleApp">
 <head>
 	<title>Directives</title>
-	<script src="angular.js"></script>
+	<script src="vendor/angular/angular.js"></script>
 	<link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 	<link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
 	<script>
@@ -9,7 +9,8 @@
 		.directive("unorderedList", function() {
 			return {
 				link: function(scope, element, attrs) {
-					var data = scope[attrs["unorderedList"]] || attrs["listSource"];
+					var data = scope[attrs["unorderedList"] || attrs["listSource"]];
+					console.log(attrs["listSource"]);
 					var propertyExpression = attrs["listProperty"] || "price | currency";
 					if (angular.isArray(data)) {
 						var listElem = angular.element("<ul>");
@@ -45,7 +46,7 @@
 			<h3>Products</h3>
 		</div>
 		<div class="panel-body">
-			<div unordered-list="products" list-property="price | currency"></div>
+			<unordered-list list-source="products" list-property="price | currency"></unordered-list>
 		</div>
 	</div>
 </body>
