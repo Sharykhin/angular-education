@@ -9,8 +9,9 @@
 		.directive("unorderedList", function() {
 			return {
 				link: function(scope, element, attrs) {
+					console.log(element);
 					var data = scope[attrs["unorderedList"] || attrs["listSource"]];
-					console.log(attrs["listSource"]);
+					
 					var propertyExpression = attrs["listProperty"] || "price | currency";
 					if (angular.isArray(data)) {
 						var listElem = angular.element("<ul>");
@@ -47,6 +48,8 @@
 		</div>
 		<div class="panel-body">
 			<unordered-list list-source="products" list-property="price | currency"></unordered-list>
+			<div unordered-list="products" list-property="price | currency"></div>
+			<!-- directive: unordered-list products -->
 		</div>
 	</div>
 </body>
