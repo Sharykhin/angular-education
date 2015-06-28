@@ -13,10 +13,8 @@
 
 				},
 				restrict: "A",
-				templateUrl: function(elem, attrs) {
-					return attrs["template"] == "table" ?
-						"tableTemplate.html" : "itemTemplate.html";
-				}
+				replace:true,
+				templateUrl: "tableTemplate.html"
 			}
 		})		
 		.controller("defaultCtrl", function ($scope) {
@@ -34,15 +32,10 @@
 			<h3>Products</h3>
 		</div>
 		<div class="panel-body">
-			<div unordered-list="products">
+			<div unordered-list="products" class="table table-striped" ng-repeat="count in [1, 2, 3]">
 				This is whee the list will go
 			</div>
-		</div>
-		<div class="panel-body">
-			<div unordered-list="products" template="table" class="table table-striped">
-				This is whee the list will go
-			</div>
-		</div>
+		</div>		
 	</div>
 </body>
 </html>
