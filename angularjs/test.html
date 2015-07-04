@@ -7,20 +7,27 @@
     <link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
    <script>
         angular.module('exampleApp',[])
-            .controller('defaultCtrl',['$scope',function($scope){
-                $scope.name = "DA DA";
-                console.log(this.myname);
+            .controller('ParentCtrl',['$scope',function($scope){
+                $scope.name = "Parent name";
+                $scope.data = {name:'John', age:45};
             }])
             .controller('ChildCtrl',function($scope){
-                $scope.myname="Abba";                
+                $scope.name="Child name"; 
+                $scope.data.name='Elly';               
             });
             
     </script>
 </head>
 <body>
-   <div id="todoPanel" class="panel" ng-controller="defaultCtrl">
-        <div>{{myname}}</div>
-        <div ng-include="'inc.html'"></div>
+   <div id="todoPanel" class="panel" ng-controller="ParentCtrl">
+        <p>{{name}}</p>
+        <p>{{data.name}} : {{data.age}}</p>
+        <hr />
+        <div ng-controller="ChildCtrl">
+            <p>{{name}}</p>
+            <p>{{data.name}} : {{data.age}}</p>
+        </div>
+        <!-- <div ng-include="'inc.html'"></div> -->
        
     </div>
 </body>
