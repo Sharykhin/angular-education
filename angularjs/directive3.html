@@ -7,7 +7,7 @@
 	<link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
 	<script type="text/ng-template" id="scopeTemplate">
 		<div class="panel-body">
-			<p>Data Value: <input ng-model="local" /></p>
+			<p>Data Value: {{local}}, City: {{ cityFn() }}</p>
 		</div>
 	</script>
 	<script type="text/javascript">
@@ -18,13 +18,21 @@
 					return angular.element(document.querySelector("#scopeTemplate")).html();
 				},				
 				scope: {
-					local: "=nameprop"
+					local: "=nameprop",
+					cityFn: "&city"
 				}
 			}
 		})
 		.controller("scopeCtrl", function ($scope) {
-				$scope.data = {name: 'Adam'};
-				$scope.city = 'London';
+				$scope.data = {
+					name: 'Adam',
+					defaultCity: 'London'
+				};
+				
+
+				$scope.getCity = function(name) {
+					return name == "Adam" ? $scope.data.defaultCity : "Unknown";
+				}
 		});
 		
 	</script>
@@ -34,7 +42,7 @@
 		<div class="panel-body">
 			Direct Binding: <input ng-model="data.name" />
 		</div>
-		<div class="panel-body" scope-demo nameprop="data.name"></div>
+		<div class="panel-body" scope-demo nameprop="data.name" city="getCity(data.name)"></div>
 	</div>
 </body>
 </html>
