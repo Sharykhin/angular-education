@@ -8,6 +8,7 @@
 	<script type="text/ng-template" id="scopeTemplate">
 		<div class="panel-body">
 			<p>Data Value: {{local}}, City: {{ cityFn() }}</p>
+			<h4>{{takeAway()}}</h4>
 		</div>
 	</script>
 	<script type="text/javascript">
@@ -19,30 +20,52 @@
 				},				
 				scope: {
 					local: "=nameprop",
-					cityFn: "&city"
+					cityFn: "&city",
+					takeAway: '&take'
 				}
 			}
 		})
 		.controller("scopeCtrl", function ($scope) {
-				$scope.data = {
+			var vm = this;
+				vm.data = {
 					name: 'Adam',
-					defaultCity: 'London'
+					defaultCity: 'London',
+					
+				};
+
+				vm.person = {
+					name: 'Mark'
 				};
 				
+				vm.Date='new Date';
 
-				$scope.getCity = function(name) {
-					return name == "Adam" ? $scope.data.defaultCity : "Unknown";
+				vm.getCity = function(name) {
+					return name == "Adam" ? vm.data.defaultCity : "Unknown";
 				}
+
+				vm.takeAway = function() {
+					return "takeAway";
+				}
+		})
+		.controller("childCtrl", function($scope){
+
 		});
 		
 	</script>
 </head>
-<body ng-controller="scopeCtrl">
+<body ng-controller="scopeCtrl as default">
 	<div class="panel panel-default">
 		<div class="panel-body">
-			Direct Binding: <input ng-model="data.name" />
+			Direct Binding: <input ng-model="default.data.name" />
+			<h2>{{default.takeAway()}}</h2>
+
 		</div>
-		<div class="panel-body" scope-demo nameprop="data.name" city="getCity(data.name)"></div>
+		<div class="panel-body" scope-demo nameprop="default.data.name" city="default.getCity(default.data.name)" take="default.takeAway()"></div>
+	</div>
+	<hr/>
+	<div ng-controller="childCtrl as child">
+		<h3>{{default.person.name}}</h3>
+		<p>{{$parent.Date}}</p>
 	</div>
 </body>
 </html>
