@@ -11,43 +11,31 @@
 	</script>
 	<script>
 		angular.module("exampleApp", [])
-		.controller("defaultCtrl", function ($scope) {
+		.controller("basketCtrl", function ($scope) {
 			$scope.products = [
 				{ name: "Apples", price: 1.20, quantity: 2 },
 				{ name: "Bananas", price: 2.42, quantity: 3 },
 				{ name: "Pears", price: 2.02, quantity: 1 }
 			];
-
-			$scope.totalValue = 0;
-			$scope.products.forEach(function(item){				
-				$scope.totalValue += Number(item.quantity);
-			});
-
-			$scope.updateTotal = function() {
-				$scope.totalValue = 0;
-				for (var i = 0; i < $scope.products.length; i++) {
-					$scope.totalValue += Number($scope.products[i].quantity);
-				}				
-			}
-
-			$scope.addPrice = function() {
-				$scope.totalValue += 10;
-			}
+			
+		})
+		.controller('logisticsCtrl', function($scope){
+				$scope.logisticsitems = [
+					{name:'Hages', quantity:200, type:'Children'},
+					{name:'Babies Boo', quantity:320, type:'Children'},
+					{name:'toy', quantity:16, type:'Toys'},
+				]
 		})
 		.directive("productItem", function () {
 			return {
 				template: document.querySelector("#productTemplate").outerText,
-				link: function(scope, element, attrs) {
-					scope.$watch("item.quantity", function() {
-						
-					})
-				}
-				/*require: "^productTable",
+				require:"^productTable",
 				link: function(scope, element, attrs, ctrl) {
+					
 					scope.$watch("item.quantity", function() {
 						ctrl.updateTotal();
 					})
-				}*/
+				}				
 			}
 		})
 		.directive("productTable", function () {
@@ -67,22 +55,37 @@
 		});
 	</script>
 </head>
-<body ng-controller="defaultCtrl">
-	<div class="panel panel-default">
-		<div class="panel-body">
-		<table class="table table-striped" product-table="totalValue" product-data="products" ng-transclude>
+<body>
+	<div ng-controller="basketCtrl">
+		<div class="panel panel-default">
+			<div class="panel-body">
+			<table class="table table-striped" product-table="totalValue" product-data="products" ng-transclude>
+				<tr>
+					<th>Name</th>
+					<th>Quantity</th>
+				</tr>
+				<tr ng-repeat="item in products" product-item></tr>
+				<tr>
+					<th>Total:</th>
+					<td>{{totalValue}}</td>
+				</tr>
+			</table>
+		</div>
+		<button ng-click="updateTotal()">Update</button>
+		</div>
+	</div>
+	<div ng-controller="logisticsCtrl">
+		<table class="table table-striped" product-table="totalValue" product-data="logisticsitems" ng-transclude>
 			<tr>
 				<th>Name</th>
 				<th>Quantity</th>
 			</tr>
-			<tr ng-repeat="item in products" product-item></tr>
+			<tr ng-repeat="item in logisticsitems" product-item></tr>
 			<tr>
 				<th>Total:</th>
 				<td>{{totalValue}}</td>
 			</tr>
 		</table>
 	</div>
-	<button ng-click="updateTotal()">Update</button>
-</div>
 </body>
 </html>
