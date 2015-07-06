@@ -32,16 +32,22 @@
 										
 					return function ($scope, $element, $attr) {						
 						
-						$scope.$watch("data.length", function () {
-							var parent = $element.parent();
+						$scope.$watch("data.length", function () {							
+							var parent = $element.parent();							
 							parent.children().remove();
+							console.log('Before');
+							console.log(parent.children());
+
 							for (var i = 0; i < $scope.data.length; i++) {
 								var childScope = $scope.$new();
 								childScope[$scope.propName] = $scope.data[i];
+								console.log(childScope);
 								transcludeFn(childScope, function (clone) {
 									parent.append(clone);
 								});
 							}
+							console.log('After');
+							console.log(parent.children());
 						});
 					}
 				}
