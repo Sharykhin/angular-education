@@ -9,6 +9,9 @@
 		<td>{{item.name}}</td>
 		<td><input ng-model='item.quantity' /></td>
 	</script>
+	<script type="text/ng-template" id="resetTemplate">
+		<td colspan="2"><button ng-click="reset()">Reset</button></td>
+	</script>
 	<script>
 		angular.module("exampleApp", [])
 		.controller("basketCtrl", function ($scope) {
@@ -52,6 +55,24 @@
 					}
 				}
 			}
+		})
+		.directive('resetTotals', function() {
+			return {
+				scope: {
+					data: "=productData",
+					propname: "@propertyName"
+				},
+				template: document.querySelector('#resetTemplate').outerText,
+				require: "^productTable",
+				link: function(scope, element, attrs, ctrl) {
+					scope.reset = function() {
+						for (var i=0, len = scope.data.length; i < len; i++) {
+							scope.data[i][scope.propname] = 0;
+						}
+						ctrl.updateTotal();
+					}
+				}
+			}
 		});
 	</script>
 </head>
@@ -69,6 +90,7 @@
 					<th>Total:</th>
 					<td>{{totalValue}}</td>
 				</tr>
+				<tr reset-totals product-data="products" property-name="quantity"></tr>
 			</table>
 		</div>
 		<button ng-click="updateTotal()">Update</button>
@@ -85,6 +107,7 @@
 				<th>Total:</th>
 				<td>{{totalValue}}</td>
 			</tr>
+			<tr reset-totals product-data="logisticsitems" property-name="quantity"></tr>
 		</table>
 	</div>
 </body>
