@@ -16,8 +16,14 @@
 	</script>
 	<script>
 		angular.module("exampleApp", [])
-		.controller("defaultCtrl", function ($scope) {
+		.controller("defaultCtrl", function ($scope,$log) {
 			$scope.dataValue = "Not Sure";
+			console.log($scope.myForm);
+			/*
+			$scope['form-name'].foo.$render = function() {
+				$scope['form-name'].foo.$viewValue = $scope['form-name'].foo.$viewValue || 'Not Sure';
+			}*/
+			
 		})
 		.directive("triButton", function () {
 			return {
@@ -35,7 +41,19 @@
 							}
 						}
 					}
-					setSelected(scope.dataValue);
+					
+					ctrl.$render = function() {
+						console.log('render was triggered');
+						setSelected(ctrl.$viewValue || "Not Sure");
+					};
+
+					element.on('click', function(event){
+						setSelected(event.target.innerText);
+
+						scope.$apply(function(){
+							ctrl.$setViewValue(event.target.innerText)
+						});
+					});					
 				}
 			}
 		});
@@ -44,12 +62,14 @@
 <body ng-controller="defaultCtrl">
 	<div><tri-button ng-model="dataValue" /></div>
 	<div class="well">
+		<form name="myForm">
 		Value:
-		<select ng-model="dataValue">
+		<select name="foo" ng-model="dataValue">
 			<option>Yes</option>
 			<option>No</option>
 			<option>Not Sure</option>
 		</select>
+		</form>
 	</div>
 </body>
 </html>
