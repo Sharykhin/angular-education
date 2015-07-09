@@ -7,28 +7,60 @@
     <link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
    <script>
         angular.module('exampleApp',[])
-            .controller('ParentCtrl',['$scope',function($scope){
-                $scope.name = "Parent name";
-                $scope.data = {name:'John', age:45};
+            .controller('defaultCtrl',['$scope',function($scope){
+               $scope.username = 'unknown';
+               $scope.friends = [];
+               $scope.$watch('username', function(newValue, oldValue) {
+
+               })
             }])
-            .controller('ChildCtrl',function($scope){
-                $scope.name="Child name"; 
-                $scope.data.name='Elly';               
+            .directive('friends', function(){
+                return {
+                    restrict: 'E',
+                    replace: true,
+                    require:'ngModel',
+                    scope: {
+                        friends: '@data'
+                    },                   
+                    link: function(scope, element, attrs, ngModelController) {
+                       
+                        ngModelController.$render = function() {
+                            console.info(ngModelController.$viewValue);
+
+                        }
+                        console.log(scope.friends);
+                        scope.addFriend = function() {
+                            console.log('tes us us');
+                            //scope.friends.push(scope.friend);
+                            //scope.friend = '';
+                        }
+                    }
+                }
             });
+            
             
     </script>
 </head>
 <body>
-   <div id="todoPanel" class="panel" ng-controller="ParentCtrl">
-        <p>{{name}}</p>
-        <p>{{data.name}} : {{data.age}}</p>
-        <hr />
-        <div ng-controller="ChildCtrl">
-            <p>{{name}}</p>
-            <p>{{data.name}} : {{data.age}}</p>
+    <div class="container">
+        <div class="panel">
+            <div ng-controller="defaultCtrl">
+                <form name="myForm" novalidate>
+                    <label>Username:</label>
+                    <input type="text" required name="username" ng-model="username" />
+                    <label>Friends:</label>
+                    <friends data="{{friends}}" ng-model="username">
+                        <input type="text" name="friends" ng-model="friend" />
+                        <input type="button" value="Add" ng-click="addFriend()" />
+                    </friends>
+                </form>
+                <ul>
+                    <li ng-repeat="friend in friends">
+                        {{friend}}
+                    </li>
+                </ul>
+            </div>
         </div>
-        <!-- <div ng-include="'inc.html'"></div> -->
-       
     </div>
 </body>
 </html>
