@@ -5,6 +5,7 @@
 	<script src="vendor/angular/angular.js"></script>
 	<link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 	<link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+	
 	<script type="text/ng-template" id="triTemplate">
 		<div class="well">
 			<div class="btn-group">
@@ -41,6 +42,10 @@
 							}
 						}
 					}
+
+					ctrl.$formatters.push(function(value){
+						return value == "Huh?" ? "Not Sure" : value;
+					});
 					
 					ctrl.$render = function() {
 						console.log('render was triggered');
@@ -68,6 +73,7 @@
 			<option>Yes</option>
 			<option>No</option>
 			<option>Not Sure</option>
+			<option>Huh?</option>
 		</select>
 		</form>
 	</div>
