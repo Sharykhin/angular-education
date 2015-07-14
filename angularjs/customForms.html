@@ -54,14 +54,22 @@
 						return valid ? value : undefined;
 					}
 
+					var myParser = function(value) {
+						console.info(value);
+						return 12;
+					}
+
+
 					ctrl.$parsers.push(validateParser);
 
+					ctrl.$parsers.push(myParser);
+	
 					ctrl.$formatters.push(function(value){
 						return value == "Huh?" ? "Not Sure" : value;
 					});
 					
-					ctrl.$render = function() {
-						console.log('render was triggered');
+					ctrl.$render = function() {	
+						validateParser(ctrl.$viewValue);					
 						setSelected(ctrl.$viewValue || "Not Sure");
 					};
 
