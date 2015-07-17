@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html ng-app="exampleApp">
 <head>
+	<base href="/">
 	<title>DOM API Services</title>
-<script src="vendor/angular/angular.js"></script>
+	<script src="vendor/angular/angular.js"></script>
 	<link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 	<link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
 	<script>
 		angular.module("exampleApp", [])
+		.config(function($locationProvider){
+			if (window.history && history.pushState) {
+				$locationProvider.html5Mode(true);
+			}
+		})
 		.controller("defaultCtrl", function ($scope, $location) {
 
 			$scope.$on("$locationChangeSuccess", function (event, newUrl) {
