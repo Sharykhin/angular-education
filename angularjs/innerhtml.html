@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html data-ng-app="exampleApp">
+<head>
+	<title>Services and Modules</title>
+	<script src="vendor/angular/angular.js"></script>
+	<script src="vendor/angular-sanitize/angular-sanitize.min.js"></script>
+	<link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+	<link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />	
+	<script>
+		angular.module("exampleApp", ['ngSanitize'])		
+		.controller("defaultCtrl", function ($scope, $sanitize, $sce) {
+			$scope.dangerousData = "<p>This is <b onmouseover=alert('Atack!')>dangerous</b> data </p>";
+
+			$scope.$watch("dangerousData", function(newValue){
+				$scope.trustedData = $sce.trustAsHtml(newValue);
+			});
+		});		
+	</script>
+
+</head>
+<body data-ng-controller="defaultCtrl">
+	<div class="well">
+		<p><input class="form-control" data-ng-model="dangerousData" /></p>
+		<p data-ng-bind-html="trustedData"></p>
+	</div>
+</body>
+</html>
