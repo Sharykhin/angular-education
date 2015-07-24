@@ -1,60 +1,41 @@
-angular.module("exampleApp", [])
+angular.module("exampleApp", ['increment', 'ngResource'])
 	.constant("baseUrl", "http://localhost:5500/products/")
-	.config(function($httpProvider, baseUrl) {
-		$httpProvider.interceptors.push(function($q) {
-			return {
-				'request': function(config) {
-					config.url = baseUrl + config.url;
-					return config;
-				}
-			}
-		})
-	})
-	.controller("defaultCtrl", function($scope, $http) {
+	.controller("defaultCtrl", function($scope, $http, baseUrl, $resource) {
 
 		$scope.displayMode = "list";
 		$scope.currentProduct = null;
 
+		$scope.productsResource = $resource(baseUrl + ":id", {
+			id: "@id"
+		});
+
 		$scope.listProducts = function() {
-			$scope.products = [{
-				id: 0,
-				name: "Dummy1",
-				category: "Test",
-				price: 1.25
-			}, {
-				id: 1,
-				name: "Dummy2",
-				category: "Test",
-				price: 2.45
-			}, {
-				id: 2,
-				name: "Dummy3",
-				category: "Test",
-				price: 4.25
-			}];
+
+			$scope.products = $scope.productsResource.query();
 		}
 
 		$scope.deleteProduct = function(product) {
-			$scope.products.splice($scope.products.indexOf(product), 1);
+			product.$delete().then(function() {
+				$scope.products.splice($scope.products.indexOf(product), 1);
+			});
+			$scope.displayMode = 'list';
 		}
 
 		$scope.createProduct = function(product) {
-			$scope.products.push(product);
-			$scope.displayMode = "list";
+
+			new $scope.productsResource(product).$save().then(function(newProduct) {
+				$scope.products.push(newProduct);
+				$scope.displayMode = 'list';
+			})
 		}
 
 		$scope.updateProduct = function(product) {
-			for (var i = 0; i < $scope.products.length; i++) {
-				if ($scope.products[i].id == product.id) {
-					$scope.products[i] = product;
-					break;
-				}
-			}
+			product.$save();
 			$scope.displayMode = "list";
 		}
 		$scope.editOrCreateProduct = function(product) {
 			$scope.currentProduct =
-				product ? angular.copy(product) : {};
+				product ? product : {};
 			$scope.displayMode = "edit";
 		}
 
@@ -67,6 +48,9 @@ angular.module("exampleApp", [])
 		}
 
 		$scope.cancelEdit = function() {
+			if ($scope.currentProduct && $scope.currentProduct.$get) {
+				$scope.currentProduct.$get();
+			}
 			$scope.currentProduct = {};
 			$scope.displayMode = "list";
 		}
