@@ -22,14 +22,12 @@
 						if (buttonText == "Abort") {
 							deferred[buttonGroup].reject("Aborted");
 						} else {
-							deferred[buttonGroup].resolve(buttonText);
-							console.log(promises[buttonGroup]);
+							deferred[buttonGroup].resolve(buttonText);							
 						}
 					});
 				},
 				controller: function ($scope, $element, $attrs) {
-					this.promise = $q.all(promises).then(function (results) {
-						console.log(results);
+					this.promise = $q.all(promises).then(function (results) {						
 						return results.join();
 					});
 				}
