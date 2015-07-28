@@ -1,4 +1,4 @@
-angular.module("exampleApp", ['increment', 'ngResource'])
+angular.module("exampleApp", ['increment', 'ngResource', 'ngAnimate'])
 	.constant("baseUrl", "http://localhost:5500/products/")
 	.controller("defaultCtrl", function($scope, $http, baseUrl, $resource) {
 
